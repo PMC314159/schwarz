@@ -1,719 +1,9 @@
-<!doctype html>
-<html lang="ko">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Notice · Lyceum Archive</title>
-<style>
-
-@font-face{
-  font-family:"GmarketSans";
-  src:url("../assets/GmarketSansTTFLight.ttf") format("truetype");
-  font-weight:300;
-  font-style:normal;
-  font-display:swap;
-}
-
-:root{
-  --bg:#fbfcfc;
-  --ink:#4e5658;
-  --muted:#9fb1b5;
-  --line:#dfeaec;
-  --blue:#c7f1f8;
-  --blue-2:#a9e2ee;
-  --blue-3:#7fb8c4;
-  --card:#ffffff;
-  --dark:#25272d;
-  --dark2:#2f3238;
-  --notice:#cbdde2;
-  --notice-top:#bfeaf4;
-  --notice-text:#78949b;
-  --shadow:0 14px 34px rgba(71,91,98,.10);
-  --radius:28px;
-  --max:1120px;
-}
-
-*{box-sizing:border-box}
-html{min-height:100%;background:var(--bg)}
-body{
-  margin:0;
-  min-height:100vh;
-  font-family:"GmarketSans","Noto Sans KR",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
-  font-weight:300;
-  color:var(--ink);
-  background:
-    radial-gradient(circle at 84% 8%, rgba(199,241,248,.24), transparent 26%),
-    var(--bg);
-}
-img{display:block;max-width:100%}
-a{color:inherit;text-decoration:none}
-
-.topline{
-  position:fixed;
-  inset:0 0 auto 0;
-  height:8px;
-  background:var(--blue);
-  z-index:100;
-}
-
-/* ===== fixed icon nav ===== */
-.icon-nav{
-  position:fixed;
-  z-index:90;
-  right:22px;
-  top:50%;
-  transform:translateY(-50%);
-  display:flex;
-  flex-direction:column;
-  gap:10px;
-}
-.icon-nav a{
-  width:46px;height:46px;
-  display:grid;
-  place-items:center;
-  border-radius:50%;
-  background:rgba(255,255,255,.86);
-  border:1px solid #dde9ec;
-  box-shadow:0 8px 20px rgba(61,80,86,.08);
-  color:#9cb9bf;
-  backdrop-filter:blur(12px);
-  transition:.2s ease;
-  position:relative;
-}
-.icon-nav a:hover{
-  transform:translateX(-3px);
-  color:#6999a3;
-  border-color:#cce8ed;
-}
-.icon-nav a.active{
-  background:var(--blue);
-  color:#5f8c94;
-  border-color:var(--blue);
-}
-.icon-nav svg{
-  width:20px;height:20px;
-  stroke:currentColor; fill:none; stroke-width:1.7; stroke-linecap:round; stroke-linejoin:round;
-}
-.icon-nav .tip{
-  position:absolute;
-  right:54px;
-  white-space:nowrap;
-  pointer-events:none;
-  opacity:0;
-  transform:translateX(4px);
-  transition:.2s ease;
-  background:#fff;
-  color:#8aa2a8;
-  border:1px solid #e0eaec;
-  border-radius:999px;
-  padding:7px 10px;
-  font-size:10px;
-  box-shadow:0 6px 18px rgba(70,90,96,.08);
-}
-.icon-nav a:hover .tip{opacity:1;transform:translateX(0)}
-
-.page-shell{
-  width:min(var(--max), calc(100% - 112px));
-  margin:0 auto;
-  min-height:100vh;
-  padding:74px 0 58px;
-  display:flex;
-  flex-direction:column;
-  justify-content:center;
-}
-.kicker{
-  color:#a7c0c5;
-  letter-spacing:.18em;
-  font-size:11px;
-  margin-bottom:12px;
-}
-.big-title{
-  margin:0;
-  font-size:clamp(48px,8vw,106px);
-  line-height:.95;
-  letter-spacing:-.05em;
-  font-weight:300;
-  color:#596164;
-}
-.big-title .pale{color:#b9d9df}
-.page-desc{
-  max-width:680px;
-  margin:22px 0 0;
-  color:#8ca0a4;
-  font-size:14px;
-  line-height:1.9;
-  word-break:keep-all;
-}
-.corner-credit{
-  position:fixed;
-  left:20px;
-  bottom:16px;
-  color:#c0d0d4;
-  font-size:10px;
-  letter-spacing:.06em;
-}
-
-/* ===== index ===== */
-.account-wrap{
-  display:grid;
-  grid-template-columns:auto 1fr;
-  gap:48px;
-  align-items:center;
-}
-.account-avatar{
-  width:clamp(160px,21vw,250px);
-  aspect-ratio:1;
-  border-radius:50%;
-  padding:8px;
-  background:var(--blue);
-  box-shadow:var(--shadow);
-  overflow:hidden;
-  position:relative;
-}
-.account-avatar::before{
-  content:"곰";
-  position:absolute; inset:8px;
-  display:grid; place-items:center;
-  border-radius:50%;
-  background:linear-gradient(145deg,#f7feff,#e2f7fb);
-  color:#b7d9df;
-  font-size:46px;
-}
-.account-avatar img{
-  position:relative; z-index:2;
-  width:100%;height:100%;
-  object-fit:cover;border-radius:50%;
-}
-.account-name{
-  font-size:clamp(58px,9vw,126px);
-  line-height:.92;
-  letter-spacing:-.06em;
-  margin:0;
-  color:#50585b;
-}
-.account-id{
-  margin-top:16px;
-  font-size:clamp(24px,4vw,48px);
-  color:#b3cbd0;
-  text-decoration:underline;
-  text-decoration-thickness:1px;
-  text-underline-offset:8px;
-}
-.account-tags{
-  margin-top:32px;
-  display:flex;flex-wrap:wrap;gap:10px;
-}
-.tag{
-  border:1px solid #e0e8ea;
-  background:rgba(255,255,255,.8);
-  border-radius:999px;
-  padding:12px 18px;
-  color:#718084;
-  font-size:12px;
-  box-shadow:0 5px 16px rgba(63,84,91,.06);
-}
-
-/* ===== quotes ===== */
-.quote-stack{
-  display:grid;
-  gap:14px;
-  margin-top:26px;
-}
-.quote-card{
-  padding:24px 28px;
-  background:rgba(255,255,255,.82);
-  border:1px solid #dcebee;
-  border-radius:20px;
-  box-shadow:0 8px 28px rgba(63,88,95,.07);
-  position:relative;
-  overflow:hidden;
-}
-.quote-card::after{
-  content:"“";
-  position:absolute;
-  right:22px; top:-24px;
-  color:rgba(154,218,230,.13);
-  font-size:150px; line-height:1;
-  font-family:Georgia,serif;
-}
-.quote-who{
-  font-size:11px;
-  letter-spacing:.17em;
-  color:#a4c0c6;
-  margin-bottom:12px;
-}
-.quote-text{
-  position:relative; z-index:1;
-  margin:0;
-  font-size:clamp(18px,2.15vw,27px);
-  line-height:1.75;
-  letter-spacing:-.025em;
-  color:#596568;
-  word-break:keep-all;
-}
-.quote-source{
-  position:relative; z-index:1;
-  margin-top:14px;
-  padding-top:12px;
-  border-top:1px solid #e2eff1;
-  color:#8ca3a8;
-  font-size:12px;
-  line-height:1.7;
-}
-.quote-source em{font-style:normal;color:#6c8186}
-.quote-original{
-  margin-top:6px;
-  color:#b0c0c3;
-  font-size:11px;
-  line-height:1.6;
-}
-
-/* ===== characters ===== */
-.people{
-  display:grid;
-  grid-template-columns:repeat(3,1fr);
-  gap:18px;
-  margin-top:34px;
-}
-.person{
-  background:rgba(255,255,255,.83);
-  border:1px solid #deebed;
-  border-radius:24px;
-  padding:20px;
-  box-shadow:0 8px 26px rgba(63,88,95,.07);
-}
-.person-image{
-  width:100%;
-  aspect-ratio:4/3;
-  border-radius:18px;
-  overflow:hidden;
-  position:relative;
-  background:linear-gradient(135deg,#eefcff,#dceff3);
-}
-.person-image::before{
-  content:attr(data-letter);
-  position:absolute; inset:0;
-  display:grid;place-items:center;
-  color:#bad8de;
-  font-size:70px;
-}
-.person-image img{
-  width:100%;height:100%;object-fit:cover;
-  position:relative;z-index:2;
-}
-.person-name{
-  margin:18px 0 0;
-  font-size:22px;
-  color:#566165;
-}
-.person-latin{
-  display:block;
-  margin-top:5px;
-  color:#a1b5ba;
-  font-size:11px;
-}
-.person-copy{
-  margin:16px 0 0;
-  color:#738185;
-  font-size:13px;
-  line-height:1.85;
-  word-break:keep-all;
-}
-.keywords{
-  margin-top:16px;
-  display:flex;flex-wrap:wrap;gap:7px;
-}
-.keywords span{
-  padding:7px 9px;
-  font-size:10px;
-  border-radius:999px;
-  background:#ebfbfe;
-  color:#74a2ab;
-}
-
-/* ===== notice page, based on attached reference ===== */
-body.notice-body{
-  background:
-    radial-gradient(circle at 50% -15%, rgba(107,124,114,.16), transparent 30%),
-    var(--dark);
-  color:#d6dcda;
-}
-.notice-body .topline{background:#bfeaf4}
-.notice-body .icon-nav a{
-  background:rgba(46,49,54,.9);
-  border-color:#3c4147;
-  color:#91b7c0;
-}
-.notice-body .icon-nav a.active{
-  background:#bfeaf4;
-  border-color:#bfeaf4;
-  color:#597980;
-}
-.notice-body .icon-nav .tip{
-  background:#30343a;border-color:#3d4247;color:#a9c0c5;
-}
-.notice-body .corner-credit{color:#5d6268}
-
-.notice-shell{
-  width:min(920px, calc(100% - 112px));
-  margin:0 auto;
-  min-height:100vh;
-  padding:48px 0 54px;
-}
-.notice-label{
-  color:#78959c;
-  letter-spacing:.18em;
-  font-size:11px;
-  margin-bottom:14px;
-}
-.profile-panel{
-  border-radius:42px;
-  overflow:hidden;
-  background:var(--notice);
-  height:245px;
-  min-height:0;
-  position:relative;
-  box-shadow:0 14px 34px rgba(0,0,0,.13);
-}
-.profile-panel-top{
-  height:92px;
-  background:var(--notice-top);
-}
-.notice-avatar{
-  position:absolute;
-  top:44px;
-  left:54px;
-  width:112px;
-  height:112px;
-  border-radius:50%;
-  padding:6px;
-  background:rgba(244,248,245,.88);
-  box-shadow:0 8px 18px rgba(0,0,0,.08);
-}
-.notice-avatar::before{
-  content:"곰";
-  position:absolute; inset:8px;
-  display:grid;place-items:center;
-  border-radius:50%;
-  color:#8eaab1;
-  font-size:34px;
-  background:#dbeef2;
-}
-.notice-avatar img{
-  position:relative;z-index:2;
-  width:100%;height:100%;object-fit:cover;border-radius:50%;
-}
-.profile-mood{
-  position:absolute;
-  left:54px;
-  bottom:25px;
-  color:#76939a;
-  font-size:22px;
-  line-height:1.25;
-  letter-spacing:-.03em;
-}
-.profile-mood .emoji{
-  display:block;
-  font-size:30px;
-  margin-bottom:0;
-}
-.notice-card{
-  margin-top:18px;
-  padding:58px 56px 50px;
-  border-radius:58px;
-  background:var(--notice);
-  box-shadow:0 14px 34px rgba(0,0,0,.13);
-}
-.notice-text{
-  color:var(--notice-text);
-  font-size:clamp(17px,2.3vw,27px);
-  line-height:2.0;
-  letter-spacing:-.035em;
-  word-break:keep-all;
-}
-.notice-text p{
-  margin:0 0 20px;
-}
-.notice-text p:last-child{margin-bottom:0}
-
-/* ===== mobile ===== */
-@media (max-width:860px){
-  .page-shell,.notice-shell{width:min(100% - 40px, 760px)}
-  .account-wrap{grid-template-columns:1fr;justify-items:center;text-align:center}
-  .account-tags{justify-content:center}
-  .people{grid-template-columns:1fr}
-  .icon-nav{
-    top:auto;bottom:16px;right:50%;transform:translateX(50%);
-    flex-direction:row;
-    padding:7px;
-    background:rgba(255,255,255,.72);
-    border:1px solid #e1eaec;
-    border-radius:999px;
-    backdrop-filter:blur(14px);
-  }
-  .notice-body .icon-nav{background:rgba(39,42,47,.84);border-color:#3b4045}
-  .icon-nav .tip{display:none}
-  .corner-credit{display:none}
-  body{padding-bottom:72px}
-  .profile-panel{
-  border-radius:42px;
-  overflow:hidden;
-  background:var(--notice);
-  height:245px;
-  min-height:0;
-  position:relative;
-  box-shadow:0 14px 34px rgba(0,0,0,.13);
-}
-  .profile-panel-top{
-  height:92px;
-  background:var(--notice-top);
-}
-  .notice-avatar{
-  position:absolute;
-  top:44px;
-  left:54px;
-  width:112px;
-  height:112px;
-  border-radius:50%;
-  padding:6px;
-  background:rgba(244,248,245,.88);
-  box-shadow:0 8px 18px rgba(0,0,0,.08);
-}
-  .profile-mood{
-  position:absolute;
-  left:54px;
-  bottom:25px;
-  color:#76939a;
-  font-size:22px;
-  line-height:1.25;
-  letter-spacing:-.03em;
-}
-  .notice-card{border-radius:38px;padding:42px 34px}
-}
-@media (max-width:520px){
-  .page-shell,.notice-shell{width:min(100% - 24px, 480px)}
-  .quote-card{padding:24px 22px}
-  .account-avatar{width:145px}
-  .tag{padding:10px 13px}
-  .profile-panel{
-  border-radius:42px;
-  overflow:hidden;
-  background:var(--notice);
-  height:245px;
-  min-height:0;
-  position:relative;
-  box-shadow:0 14px 34px rgba(0,0,0,.13);
-}
-  .profile-panel-top{
-  height:92px;
-  background:var(--notice-top);
-}
-  .notice-avatar{
-  position:absolute;
-  top:44px;
-  left:54px;
-  width:112px;
-  height:112px;
-  border-radius:50%;
-  padding:6px;
-  background:rgba(244,248,245,.88);
-  box-shadow:0 8px 18px rgba(0,0,0,.08);
-}
-  .profile-mood{
-  position:absolute;
-  left:54px;
-  bottom:25px;
-  color:#76939a;
-  font-size:22px;
-  line-height:1.25;
-  letter-spacing:-.03em;
-}
-  .notice-card{padding:34px 26px}
-}
-
-.icon-nav svg{
-  width:20px !important;
-  height:20px !important;
-  max-width:20px !important;
-  max-height:20px !important;
-}
-.icon-nav a{font-size:0;}
-.icon-nav .tip{font-size:10px;}
-
-</style>
-
-<style>
-/* compact notice profile — final override */
-.profile-panel{
-  height:245px !important;
-  min-height:0 !important;
-  border-radius:42px !important;
-}
-.profile-panel-top{height:92px !important;}
-.notice-avatar{
-  top:44px !important;
-  left:54px !important;
-  width:112px !important;
-  height:112px !important;
-}
-.profile-mood{
-  left:54px !important;
-  bottom:25px !important;
-  font-size:22px !important;
-  line-height:1.2 !important;
-}
-.profile-mood .emoji{
-  font-size:30px !important;
-  margin:0 !important;
-}
-.notice-card{margin-top:18px !important;}
-
-@media (max-width:860px){
-  .profile-panel{
-    height:220px !important;
-    min-height:0 !important;
-    border-radius:34px !important;
-  }
-  .profile-panel-top{height:82px !important;}
-  .notice-avatar{
-    top:38px !important;
-    left:32px !important;
-    width:96px !important;
-    height:96px !important;
-  }
-  .profile-mood{
-    left:32px !important;
-    bottom:22px !important;
-    font-size:20px !important;
-  }
-  .profile-mood .emoji{font-size:28px !important;}
-}
-
-@media (max-width:520px){
-  .profile-panel{
-    height:195px !important;
-    min-height:0 !important;
-    border-radius:28px !important;
-  }
-  .profile-panel-top{height:72px !important;}
-  .notice-avatar{
-    top:33px !important;
-    left:24px !important;
-    width:84px !important;
-    height:84px !important;
-  }
-  .profile-mood{
-    left:24px !important;
-    bottom:18px !important;
-    font-size:18px !important;
-  }
-  .profile-mood .emoji{font-size:26px !important;}
-  .notice-card{margin-top:14px !important;}
-}
-</style>
-
-
-<style>
-/* Notice profile: compact, but with safe breathing room */
-.profile-panel{
-  height:270px !important;
-  min-height:0 !important;
-  border-radius:42px !important;
-}
-.profile-panel-top{
-  height:104px !important;
-}
-.notice-avatar{
-  top:48px !important;
-  left:56px !important;
-  width:116px !important;
-  height:116px !important;
-}
-.profile-mood{
-  left:56px !important;
-  right:40px !important;
-  bottom:34px !important;
-  font-size:25px !important;
-  line-height:1.35 !important;
-  letter-spacing:-.03em !important;
-}
-.profile-mood .nickname{
-  display:block;
-  padding-top:2px;
-}
-.notice-card{
-  margin-top:20px !important;
-  padding:48px 54px 44px !important;
-}
-.notice-text{
-  line-height:1.9 !important;
-}
-.notice-text p{
-  margin:0 0 18px !important;
-}
-.notice-text p:last-child{
-  margin-bottom:0 !important;
-}
-
-@media (max-width:860px){
-  .profile-panel{
-    height:238px !important;
-    border-radius:34px !important;
-  }
-  .profile-panel-top{
-    height:92px !important;
-  }
-  .notice-avatar{
-    top:42px !important;
-    left:34px !important;
-    width:100px !important;
-    height:100px !important;
-  }
-  .profile-mood{
-    left:34px !important;
-    right:30px !important;
-    bottom:28px !important;
-    font-size:22px !important;
-  }
-  .notice-card{
-    margin-top:18px !important;
-    padding:40px 36px 38px !important;
-  }
-}
-
-@media (max-width:520px){
-  .profile-panel{
-    height:214px !important;
-    border-radius:28px !important;
-  }
-  .profile-panel-top{
-    height:82px !important;
-  }
-  .notice-avatar{
-    top:37px !important;
-    left:26px !important;
-    width:90px !important;
-    height:90px !important;
-  }
-  .profile-mood{
-    left:26px !important;
-    right:24px !important;
-    bottom:24px !important;
-    font-size:20px !important;
-  }
-  .notice-card{
-    margin-top:15px !important;
-    padding:34px 28px 32px !important;
-  }
-}
-</style>
-
-</head>
-<body class="notice-body">
+<body>
 
 <div class="topline"></div>
+
 <nav class="icon-nav" aria-label="페이지 이동">
-  <a href="../index.html" class="">
+  <a href="../index.html">
     <span class="tip">ACCOUNT</span>
     <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true">
       <path d="M3.5 10.5 12 3l8.5 7.5"></path>
@@ -721,13 +11,15 @@ body.notice-body{
       <path d="M9.5 21v-6h5v6"></path>
     </svg>
   </a>
-  <a href="../quotes/index.html" class="">
+
+  <a href="../quotes/index.html">
     <span class="tip">QUOTES</span>
     <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true">
       <path d="M8.5 6H5.8A2.8 2.8 0 0 0 3 8.8V12h5.5v6H3"></path>
       <path d="M20.5 6h-2.7A2.8 2.8 0 0 0 15 8.8V12h5.5v6H15"></path>
     </svg>
   </a>
+
   <a href="../notice/index.html" class="active">
     <span class="tip">NOTICE</span>
     <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true">
@@ -735,7 +27,8 @@ body.notice-body{
       <path d="M8.3 10.8h7.4M8.3 13.8h4.8"></path>
     </svg>
   </a>
-  <a href="../characters/index.html" class="">
+
+  <a href="../characters/index.html">
     <span class="tip">PEOPLE</span>
     <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true">
       <circle cx="9" cy="8" r="3.2"></circle>
@@ -746,31 +39,64 @@ body.notice-body{
   </a>
 </nav>
 
-
 <main class="notice-shell">
-  <div class="notice-label">PROFILE · NOTICE</div>
 
   <section class="profile-panel">
+
     <div class="profile-panel-top"></div>
+
     <div class="notice-avatar">
-      <img src="../assets/profile.jpg" alt="프로필" onerror="this.style.display='none'">
+      <img
+        src="../assets/profile.jpg"
+        alt="프로필"
+        onerror="this.style.display='none'"
+      >
     </div>
+
     <div class="profile-mood">
-      <span class="nickname">곰돌</span>
+      <span class="nickname">
+        곰돌
+      </span>
     </div>
+
   </section>
+
 
   <section class="notice-card">
+
     <div class="notice-text">
-      <p>‘순정철학논고’ 니체 위주 드림계입니다. 백업 및 썰, 연성 업로드 위주로 굴러갑니다.</p>
-      <p>극온리로, 니체 드림은 보이는 족족 뮤트합니다. 악의 없습니다.</p>
-      <p>1T1D합니다.</p>
-      <p>우익 장르는 받지 않습니다.</p>
-      <p>이 외에도 보지 못하는 드림이 있으며, 발견하는 경우 조용히 뮤트합니다.</p>
+
+      <p>
+        ‘순정철학논고’ 니체 위주 드림계입니다.
+        백업 및 썰, 연성 업로드 위주로 굴러갑니다.
+      </p>
+
+      <p>
+        극온리로, 니체 드림은 보이는 족족 뮤트합니다.
+        악의 없습니다.
+      </p>
+
+      <p>
+        1T1D합니다.
+      </p>
+
+      <p>
+        우익 장르는 받지 않습니다.
+      </p>
+
+      <p>
+        이 외에도 보지 못하는 드림이 있으며,
+        발견하는 경우 조용히 뮤트합니다.
+      </p>
+
     </div>
+
   </section>
+
 </main>
 
-<div class="corner-credit">@se1maschwarz</div>
+<div class="corner-credit">
+  @se1maschwarz
+</div>
+
 </body>
-</html>
